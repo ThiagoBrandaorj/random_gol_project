@@ -1,82 +1,85 @@
+const opcoes = [
+  "Libertadores", "Copa do Brasil", "Brasileirão",
+  "Sul-americana","Brasileirão B"
+];
+
 const torneios = {
-  "Brasileirão Série A": range(2003, 2024),
-  "Copa do Brasil": range(1989, 2024),
-  "Libertadores": range(1960, 2024),
-  "Sul-Americana": range(2002, 2024),
-  "Brasileirão Série B": range(2003, 2024)
+  "Libertadores": Range(1960,2024),
+  "Copa do Brasil": Range(1989,2024),
+  "Brasileirão": Range(2003,2024),
+  "Brasileirão B": Range(2003,2024),
+  "Sul-americana": Range(2002,2024)
 };
 
-function range(start, end) {
-  return Array.from({ length: end - start }, (_, i) => start + i);
+function Range(start, end) {
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 }
 
-const opcoes = Object.keys(torneios);
-const opcoesContainer = document.getElementById('opcoes');
-const roleta = document.getElementById('roleta');
-const girarBtn = document.getElementById('girar');
-const timeDiv = document.getElementById('time');
-const anoDiv = document.getElementById('ano');
-
-const cores = ['#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6'];
-
-// Criar segmentos SVG
-opcoes.forEach((opcao, index) => {
-  const angle = 360 / opcoes.length;
-  const startAngle = angle * index;
-  const endAngle = angle * (index + 1);
-  const rad = Math.PI / 180;
-
-  const x1 = 100 + 100 * Math.cos(rad * startAngle);
-  const y1 = 100 + 100 * Math.sin(rad * startAngle);
-  const x2 = 100 + 100 * Math.cos(rad * endAngle);
-  const y2 = 100 + 100 * Math.sin(rad * endAngle);
-
-  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  const largeArc = angle > 180 ? 1 : 0;
-
-  path.setAttribute("d", `M100,100 L${x1},${y1} A100,100 0 ${largeArc} 1 ${x2},${y2} Z`);
-  path.setAttribute("fill", cores[index % cores.length]);
-
-  const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-  const textAngle = (startAngle + endAngle) / 2;
-  const tx = 100 + 60 * Math.cos(rad * textAngle);
-  const ty = 100 + 60 * Math.sin(rad * textAngle);
-
-  text.setAttribute("x", tx);
-  text.setAttribute("y", ty);
-  text.setAttribute("fill", "white");
-  text.setAttribute("font-size", "10");
-  text.setAttribute("text-anchor", "middle");
-  text.setAttribute("alignment-baseline", "middle");
-  text.setAttribute("transform", `rotate(${textAngle}, ${tx}, ${ty})`);
-  text.textContent = opcao;
-
-  opcoesContainer.appendChild(path);
-  opcoesContainer.appendChild(text);
-});
+const roleta = document.getElementById("roleta");
+const girarBtn = document.getElementById("girar");
+const timeDiv = document.getElementById("time");
+const anoDiv = document.getElementById("ano");
 
 let anguloAtual = 0;
 
-girarBtn.addEventListener('click', () => {
+function desenharRoleta() {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  const size = 300;
+  canvas.width = size;
+  canvas.height = size;
+  const numOpcoes = opcoes.length;
+  const angulo = (2 * Math.PI) / numOpcoes;
+  const cores = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40", "#00A36C"];
+
+  for (let i = 0; i < numOpcoes; i++) {
+    ctx.beginPath();
+    ctx.moveTo(size / 2, size / 2);
+    ctx.fillStyle = cores[i % cores.length];
+    ctx.arc(size / 2, size / 2, size / 2, i * angulo, (i + 1) * angulo);
+    ctx.fill();
+
+    ctx.save();
+    ctx.translate(size / 2, size / 2);
+    ctx.rotate(i * angulo + angulo / 2);
+    ctx.textAlign = "right";
+    ctx.fillStyle = "white";
+    ctx.font = "bold 14px Arial";
+    ctx.fillText(opcoes[i], size / 2 - 10, 5);
+    ctx.restore();
+  }
+
+  roleta.innerHTML = "";
+  roleta.appendChild(canvas);
+}
+
+desenharRoleta();
+
+girarBtn.addEventListener("click", () => {
   girarBtn.disabled = true;
-  timeDiv.textContent = '';
-  anoDiv.textContent = '';
+  timeDiv.textContent = "";
+  anoDiv.textContent = "";
 
   const giros = 3 + Math.random() * 2;
-  const anguloPorOpcao = 360 / opcoes.length;
-  const opcaoIndex = Math.floor(Math.random() * opcoes.length);
-  const anguloFinal = opcaoIndex * anguloPorOpcao;
-  const anguloTotal = 360 * giros + anguloFinal;
+  const anguloAleatorio = Math.random() * 360;
+  const anguloTotal = 360 * giros + anguloAleatorio;
 
   anguloAtual += anguloTotal;
+  roleta.style.transition = "transform 4s ease-out";
   roleta.style.transform = `rotate(-${anguloAtual}deg)`;
 
-  setTimeout(() => {
-    const torneio = opcoes[opcaoIndex];
+  roleta.addEventListener("transitionend", () => {
+    const anguloPorOpcao = 360 / opcoes.length;
+
+    const rotReal = ((-anguloAtual % 360) + 360) % 360;
+    const anguloAjustado = (270 - rotReal + 360) % 360;
+    const indexSelecionado = Math.floor(anguloAjustado / anguloPorOpcao) % opcoes.length;
+
+    const torneio = opcoes[indexSelecionado];
     const ano = torneios[torneio][Math.floor(Math.random() * torneios[torneio].length)];
 
     timeDiv.textContent = torneio;
     anoDiv.textContent = `Ano: ${ano}`;
     girarBtn.disabled = false;
-  }, giros * 1000);
+  }, { once: true });
 });
