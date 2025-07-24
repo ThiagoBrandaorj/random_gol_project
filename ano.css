@@ -1,0 +1,133 @@
+:root {
+  --cor-primaria: #2c3e50;
+  --cor-secundaria: #e74c3c;
+  --cor-texto: #34495e;
+  --fonte-titulo: 'Montserrat', sans-serif;
+  --fonte-texto: 'Open Sans', sans-serif;
+}
+
+body {
+  font-family: var(--fonte-texto);
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--cor-texto);
+}
+
+.container {
+  text-align: center;
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 500px;
+}
+
+header h1 {
+  font-family: var(--fonte-titulo);
+  color: var(--cor-primaria);
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  margin-top: 0;
+  color: #7f8c8d;
+}
+
+.roleta-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 2rem auto;
+}
+
+.roleta {
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  transition: transform 4s cubic-bezier(0.17, 0.67, 0.21, 0.99);
+  transform-origin: center;
+  border-radius: 50%;
+  overflow: visible;
+  position: relative;
+}
+
+.seta {
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 30px solid var(--cor-secundaria);
+  z-index: 10;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.4));
+}
+
+button {
+  background: var(--cor-secundaria);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: bold;
+  margin-top: 1rem;
+  box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+}
+
+button:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(231, 76, 60, 0.4);
+}
+
+button:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+}
+
+.resultado {
+  margin-top: 2rem;
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border-left: 5px solid var(--cor-secundaria);
+}
+
+.time {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--cor-primaria);
+  margin-bottom: 0.5rem;
+}
+
+.ano {
+  font-size: 1.2rem;
+  color: #7f8c8d;
+}
+
+footer {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #95a5a6;
+}
+
+@media (max-width: 600px) {
+  .roleta {
+    width: 250px;
+    height: 250px;
+  }
+
+  text {
+    font-size: 9px;
+  }
+}
