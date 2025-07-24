@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roleta de Torneios de Futebol ⚽</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roleta de Torneios de Futebol ⚽</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans&display=swap" rel="stylesheet" />
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Roleta do Futebol Brasileiro</h1>
-            <p>Gire e descubra um torneio aleatório!</p>
-        </header>
-        
-        <div class="roleta-container">
-            <div class="seta"></div>
-            <div class="roleta" id="roleta">
-                <div class="opcoes" id="opcoes"></div>
-            </div>
-        </div>
+  <div class="container">
+    <header>
+      <h1>Roleta do Futebol Brasileiro</h1>
+      <p>Gire e descubra um torneio aleatório!</p>
+    </header>
 
-        <button id="girar">Girar Roleta</button>
-        
-        <div class="resultado" id="resultado">
-            <div class="time" id="time"></div>
-            <div class="ano" id="ano"></div>
-        </div>
-
-        <footer>
-            <p>Projeto desenvolvido para fãs de futebol!</p>
-        </footer>
+    <div class="roleta-container">
+      <div class="seta"></div>
+      <div class="roleta" id="roleta">
+        <svg viewBox="0 0 200 200" width="300" height="300">
+          <g id="opcoes"></g>
+        </svg>
+      </div>
     </div>
-    <script src="script.js"></script>
+
+    <button id="girar">Girar Roleta</button>
+
+    <div class="resultado" id="resultado">
+      <div class="time" id="time"></div>
+      <div class="ano" id="ano"></div>
+    </div>
+
+    <footer>
+      <p>Projeto desenvolvido para fãs de futebol!</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
